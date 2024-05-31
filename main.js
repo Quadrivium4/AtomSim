@@ -14,7 +14,8 @@ var mouse = {
     y: 0
 }
 class Atom {
-    constructor(x, y){
+    constructor(x, y, id){
+        this.id = id;
         this.velocity = {
             x: 0,
             y: 0
@@ -33,7 +34,7 @@ class Atom {
     
     }
     click() {
-        this.color = "rgb(20,20,180)",
+        this.color = "rgb(20,20,140)",
         this.clicked = true
     }
     unclick() {
@@ -70,35 +71,35 @@ class Atom {
     
 }
 
-class MagneticCamp {
-    constructor(x, y, radius, power){
-        this.x = x;
-        this.y = y;
-        this.radius = radius;
-        this.power = power;
-        this.color = "blue"
-        this.clicked = false
-    }
-    click(){
-        this.color = "red",
-        this.clicked = true
-    }
-    unclick(){
-        this.color = "blue",
-        this.clicked = false
-    }
-    draw(){
-        c.fillStyle = "rgb(200,200,255,0.2)";
-        c.strokeStyle = this.color;
-        c.beginPath();
-        c.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        c.lineWidth = 4;
-        c.stroke();
-        c.fill();
-        c.fillStyle = "blue"
-        c.fillRect(this.x -1, this.y-1,2,2)
-    }
-}
+// class MagneticCamp {
+//     constructor(x, y, radius, power){
+//         this.x = x;
+//         this.y = y;
+//         this.radius = radius;
+//         this.power = power;
+//         this.color = "blue"
+//         this.clicked = false
+//     }
+//     click(){
+//         this.color = "red",
+//         this.clicked = true
+//     }
+//     unclick(){
+//         this.color = "blue",
+//         this.clicked = false
+//     }
+//     draw(){
+//         c.fillStyle = "rgb(200,200,255,0.2)";
+//         c.strokeStyle = this.color;
+//         c.beginPath();
+//         c.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+//         c.lineWidth = 4;
+//         c.stroke();
+//         c.fill();
+//         c.fillStyle = "blue"
+//         c.fillRect(this.x -1, this.y-1,2,2)
+//     }
+// }
 const canvas =get("#canvas");
 console.log(canvas)
 const c = canvas.getContext("2d");
@@ -108,12 +109,12 @@ canvas.height = 800;
 let centerX = Math.floor(canvas.width/2);
 let centerY = Math.floor(canvas.height/2);
 let player = new Atom();
-let electrons = [new Atom(400, 600), new Atom(200,300), new Atom(500, 100)];
-let camp = new MagneticCamp(300,300,150, 10)
-let camp1 = new MagneticCamp(600, 700, 150, 5)
-let camp2 = new MagneticCamp(0, 700, 150, 10)
-let camp3 = new MagneticCamp(800, 0, 150, 5)
-const camps = [camp, camp1, camp2, camp3];
+let electrons = [new Atom(400, 600,0), new Atom(200,300,1), new Atom(500, 100,2)];
+// let camp = new MagneticCamp(300,300,150, 10)
+// let camp1 = new MagneticCamp(600, 700, 150, 5)
+// let camp2 = new MagneticCamp(0, 700, 150, 10)
+// let camp3 = new MagneticCamp(800, 0, 150, 5)
+// const camps = [camp, camp1, camp2, camp3];
 let x = 0, y= 0;
 let campIsClicked = (electron, mouse) =>{
     const offset = electron.radius/2;
@@ -126,7 +127,7 @@ let campIsClicked = (electron, mouse) =>{
 }
 get("#add-electron").onclick = () =>{
     electrons.push(new Atom(canvas.height/2, canvas.width/2));
-    get("#sidebar").appendChild(ElectronBox(electrons.length - 1))
+    get("#electron-boxes").appendChild(ElectronBox(electrons.length - 1))
 }
 window.addEventListener("mousedown", (e)=>{
     
@@ -265,7 +266,7 @@ function ElectronBox (id){
 }
 electrons.forEach((electron, i)=>{
     const electronBox = ElectronBox(i);
-    get("#sidebar").appendChild(electronBox)
+    get("#electron-boxes").appendChild(electronBox)
 })
 
 function main() {
