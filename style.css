@@ -1,0 +1,20 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+canvas{
+    background-color: rgb(9, 7, 34);
+}
+#sidebar {
+    background-color: rebeccapurple;
+    min-width: 150px;
+}
+.electron-box {
+    padding: 10px
+}
