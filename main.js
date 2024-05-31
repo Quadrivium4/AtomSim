@@ -273,7 +273,6 @@ function ElectronBox (id, number){
     <h3>electron ${number}</h3>
     <p>speed</p>
     <p class="speed">x: 0, y: 0</p>
-    <p>acceleration</p>
     <p class="acceleration"></p>
     <button onclick="deleteAtom(${id})">elimina</button>
     `
