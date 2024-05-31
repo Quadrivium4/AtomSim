@@ -109,7 +109,10 @@ canvas.height = 800;
 let centerX = Math.floor(canvas.width/2);
 let centerY = Math.floor(canvas.height/2);
 let player = new Atom();
-let electrons = [new Atom(400, 600,0), new Atom(200,300,1), new Atom(500, 100,2)];
+function getId(){
+    return (Math.random() * 1000).toFixed(0) + Date.now();
+}
+let electrons = [new Atom(400, 600, getId()), new Atom(200,300,getId()), new Atom(500, 100,getId())];
 // let camp = new MagneticCamp(300,300,150, 10)
 // let camp1 = new MagneticCamp(600, 700, 150, 5)
 // let camp2 = new MagneticCamp(0, 700, 150, 10)
@@ -126,8 +129,9 @@ let campIsClicked = (electron, mouse) =>{
     )
 }
 get("#add-electron").onclick = () =>{
-    electrons.push(new Atom(canvas.height/2, canvas.width/2));
-    get("#electron-boxes").appendChild(ElectronBox(electrons.length - 1))
+    const electronId = getId();
+    electrons.push(new Atom(canvas.height/2, canvas.width/2, electronId));
+    get("#electron-boxes").appendChild(ElectronBox(electronId, electrons.length - 1))
 }
 window.addEventListener("mousedown", (e)=>{
     
@@ -250,24 +254,44 @@ function drawLines() {
         }
     }
 }
-function ElectronBox (id){
+function ElectronBox (id, number){
     const box = document.createElement("div");
     box.className = "electron-box";
     box.id = "electron-box" + id;
     box.innerHTML = `
-    <h3>electron ${id}</h3>
+    <h3>electron ${number}</h3>
     <p>speed</p>
     <p class="speed">x: 0, y: 0</p>
     <p>acceleration</p>
     <p class="acceleration"></p>
-    <button>del</button>
+    <button onclick="deleteAtom(${id})">elimina</button>
     `
     return box
 }
-electrons.forEach((electron, i)=>{
-    const electronBox = ElectronBox(i);
-    get("#electron-boxes").appendChild(electronBox)
-})
+function deleteAtom(id) {
+    electrons = electrons.filter(atom =>{
+        console.log(id, atom.id)
+        if(atom.id== id){   
+            removeElectronBox(id)
+        }else{
+            return atom
+        }
+
+    })
+}
+function removeElectronBox(id){
+    let elBoxes = get("#electron-boxes");
+    let child = elBoxes.querySelector("#electron-box" + id)
+    elBoxes.removeChild(child)
+}
+function drawElectronBoxes(){
+    electrons.forEach((electron, i) => {
+        const electronBox = ElectronBox(electron.id, i);
+        get("#electron-boxes").appendChild(electronBox)
+    })
+}
+drawElectronBoxes()
+
 
 function main() {
     //console.log("hi")
@@ -307,7 +331,7 @@ function main() {
             electron.acceleration = electronAccelleration;
             // electron.velocity.x += electron.acceleration.x * regolatore;
             // electron.velocity.y += electron.acceleration.y * regolatore;
-            let speed = get("#electron-box"+ i).querySelector(".speed");
+            let speed = get("#electron-box"+ electron.id).querySelector(".speed");
 
             speed.innerText = `x: ${electron.velocity.x.toPrecision(3)}, y: ${electron.velocity.y.toPrecision(3) }`
         }

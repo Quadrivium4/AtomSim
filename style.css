@@ -9,6 +9,10 @@ body{
     justify-content: center;
     background-color: rgb(24, 24, 24);
     font-family: sans-serif;
+
+}
+p{
+    color: rgb(189, 189, 189);
 }
 canvas{
     background-color: rgb(9, 7, 34);
@@ -22,9 +26,12 @@ canvas{
     display: flex;
 }
 #sidebar {
-    background-color: rebeccapurple;
-    width: 200px;
+    background-color: rgb(69, 48, 90);
+    width: 170px;
 }
 .electron-box {
     padding: 10px
+}
+button {
+    padding: 4px 8px;
 }
