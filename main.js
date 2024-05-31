@@ -1,10 +1,12 @@
 let get = document.querySelector.bind(document);
 const playButton = get("#play");
+const resetButton = get("#reset");
 playButton.onclick = ()=>{
     
     isPlaying = !isPlaying
     playButton.innerText = isPlaying ? "stop simulation":'play simulation'
 }
+
 let isPlaying = false;
 const fps = 60;
 const regolatore = 60 / fps;
@@ -13,6 +15,16 @@ var mouse = {
     x: 0,
     y: 0
 }
+let x = 0, y = 0;
+const canvas = get("#canvas");
+console.log(canvas)
+const c = canvas.getContext("2d");
+console.log("hi")
+canvas.width = 800;
+canvas.height = 800;
+let centerX = Math.floor(canvas.width / 2);
+let centerY = Math.floor(canvas.height / 2);
+
 class Atom {
     constructor(x, y, id){
         this.id = id;
@@ -100,25 +112,24 @@ class Atom {
 //         c.fillRect(this.x -1, this.y-1,2,2)
 //     }
 // }
-const canvas =get("#canvas");
-console.log(canvas)
-const c = canvas.getContext("2d");
-console.log("hi")
-canvas.width = 800;
-canvas.height = 800;
-let centerX = Math.floor(canvas.width/2);
-let centerY = Math.floor(canvas.height/2);
-let player = new Atom();
-function getId(){
-    return (Math.random() * 1000).toFixed(0) + Date.now();
-}
-let electrons = [new Atom(400, 600, getId()), new Atom(200,300,getId()), new Atom(500, 100,getId())];
+
 // let camp = new MagneticCamp(300,300,150, 10)
 // let camp1 = new MagneticCamp(600, 700, 150, 5)
 // let camp2 = new MagneticCamp(0, 700, 150, 10)
 // let camp3 = new MagneticCamp(800, 0, 150, 5)
 // const camps = [camp, camp1, camp2, camp3];
-let x = 0, y= 0;
+let player = new Atom();
+
+let electrons = [new Atom(400, 600, getId()), new Atom(200, 300, getId()), new Atom(500, 100, getId())];
+resetButton.onclick = () => {
+    isPlaying = false;
+    electrons = [new Atom(400, 600, getId()), new Atom(200, 300, getId()), new Atom(500, 100, getId())];
+    drawElectronBoxes();
+
+}
+function getId() {
+    return (Math.random() * 1000).toFixed(0) + Date.now();
+}
 let campIsClicked = (electron, mouse) =>{
     const offset = electron.radius/2;
     return (
@@ -269,6 +280,7 @@ function ElectronBox (id, number){
     return box
 }
 function deleteAtom(id) {
+    let found = false;
     electrons = electrons.filter(atom =>{
         console.log(id, atom.id)
         if(atom.id== id){   
@@ -278,6 +290,16 @@ function deleteAtom(id) {
         }
 
     })
+    renameBoxes();
+}
+function renameBoxes(){
+    let elBoxes = document.querySelectorAll(".electron-box");
+    electrons.map((electron, i)=>{
+        let child = elBoxes[i].querySelector("h3");
+        console.log(child, i)
+        child.innerText = "electron " + i;
+})
+    
 }
 function removeElectronBox(id){
     let elBoxes = get("#electron-boxes");
@@ -285,6 +307,7 @@ function removeElectronBox(id){
     elBoxes.removeChild(child)
 }
 function drawElectronBoxes(){
+    get("#electron-boxes").innerHTML = "";
     electrons.forEach((electron, i) => {
         const electronBox = ElectronBox(electron.id, i);
         get("#electron-boxes").appendChild(electronBox)
