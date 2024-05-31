@@ -1,6 +1,7 @@
 *{
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 body{
     display: flex;
@@ -9,6 +10,7 @@ body{
     justify-content: center;
     background-color: rgb(24, 24, 24);
     font-family: sans-serif;
+
 
 }
 p{
@@ -24,13 +26,23 @@ canvas{
 }
 #main {
     display: flex;
+
 }
 #sidebar {
     background-color: rgb(69, 48, 90);
-    width: 170px;
+    width: 200px;
+    padding: 10px;
 }
+#electron-boxes{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 5px 0px;
+}
+
 .electron-box {
-    padding: 10px
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.15);
 }
 button {
     padding: 4px 8px;
